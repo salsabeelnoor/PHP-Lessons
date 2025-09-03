@@ -10,6 +10,12 @@
 
 <body>
     <?php
+        $pages = [
+        'citrus_salmon' => 'Citrus Symphony Salmon',
+        'mediterranian_pasta' => 'Mediterranian Pasta',
+        'sunset_risotto' => 'Sunset Risotto',
+        'tropical_tacos' => 'Tropical Tango Tacos'
+    ];
         function e($value) {
             return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
         }
@@ -17,17 +23,28 @@
    <form method="GET" action="include.php">
         <select name="page">
             <option value="">Please select a recipe</option>
-            <option value="citrus_salmon" <?php if (!empty($_GET['page']) && $_GET['page'] == 'citrus_salmon') echo 'selected'; ?>>Citrus Symphony Salmon</option>
-            <option value="mediterranian_pasta" <?php if(!empty($_GET['page']) && $_GET['page'] == 'mediterranian_pasta') echo 'selected'; ?>>Mediterranian Pasta</option>
-            <option value="sunset_risotto" <?php if(!empty($_GET['page']) && $_GET['page'] == 'sunset_risotto') echo 'selected'; ?>>Sunset Risotto</option>
-            <option value="tropical_tacos" <?php if(!empty($_GET['page']) && $_GET['page'] == 'tropical_tacos') echo 'selected'; ?>>Tropical Tango Tacos</option>
+            <?php 
+                foreach($pages AS $key => $value) :
+                ?> 
+                    <option value="<?php echo e($key);?>" <?php if (!empty($_GET['page']) && $_GET['page'] ==  e($key)) echo 'selected'; ?>><?php echo e($value); ?></option>
+                <?php
+                endforeach;
+            ?>
         </select>
         <input type="submit" value="Submit!" />
     </form>
 
     <?php 
-        echo file_get_contents("pages/{$_GET['page']}.html");
+    
+    
+    if(!empty($_GET['page'])) {
+        $page = $_GET['page'];
+
+        if(!empty($pages[$page])) 
+            echo file_get_contents("pages/{$page}.html");
+    }
     ?>
+
 
 </body>
 
